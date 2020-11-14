@@ -113,6 +113,16 @@ def casablanca_cast
   # Obtain the cast list for 'Casablanca'. Use the id value that you obtained
   # in the previous question directly in your query (for example, id = 1).
   execute(<<-SQL)
+    SELECT
+      actors.name
+    FROM
+      actors
+      JOIN
+        castings
+    ON
+      castings.actor_id = actors.id
+    WHERE
+      castings.movie_id = 27
   SQL
 end
 
