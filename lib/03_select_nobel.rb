@@ -24,6 +24,11 @@ end
 def prizes_from_1950
   # Display Nobel prizes for 1950.
   execute(<<-SQL)
+    SELECT
+      yr, subject, winner
+    FROM
+      nobels
+    WHERE yr = '1950'
   SQL
 end
 
