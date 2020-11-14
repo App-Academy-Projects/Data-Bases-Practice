@@ -115,6 +115,15 @@ def teachers_and_divisions
   # Use CASE to show the name of each teacher followed by 'Sci' if
   # the teacher is in dept 1 or 2 and 'Art' otherwise.
   execute(<<-SQL)
+    SELECT
+      teachers.name,
+      CASE
+        WHEN teachers.dept_id IN (1, 2)
+        THEN 'Sci'
+        ELSE 'Art'
+      END
+    FROM
+      teachers
   SQL
 end
 
