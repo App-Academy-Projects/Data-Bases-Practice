@@ -40,12 +40,28 @@ end
 def exodus_artist
   # Select the name of the artist who recorded the song 'Exodus'.
   execute(<<-SQL)
+    SELECT
+      albums.artist
+    FROM
+      albums
+    JOIN
+      tracks ON tracks.album = albums.asin
+    WHERE
+      tracks.song = 'Exodus'
   SQL
 end
 
 def blur_songs
   # Select the `song` for each `track` on the album `Blur`.
   execute(<<-SQL)
+    SELECT
+      tracks.song
+    FROM
+      tracks
+    JOIN
+      albums ON tracks.album = albums.asin
+    WHERE
+      albums.title = 'Blur'
   SQL
 end
 
