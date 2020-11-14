@@ -72,6 +72,13 @@ def teachers_and_depts
   # department name. Use the string 'None' where there is no
   # department.
   execute(<<-SQL)
+    SELECT
+      teachers.name,
+      COALESCE(depts.name, 'None')
+    FROM
+      teachers
+    LEFT JOIN
+      depts ON teachers.dept_id = depts.id
   SQL
 end
 
