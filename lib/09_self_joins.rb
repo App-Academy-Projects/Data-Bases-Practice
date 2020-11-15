@@ -103,6 +103,17 @@ def cl_to_lr
   # Craiglockhart, without changing routes. Change the query so that it
   # shows the services from Craiglockhart to London Road.
   execute(<<-SQL)
+    SELECT
+      a.company,
+      a.num,
+      a.stop_id,
+      b.stop_id
+    FROM
+      routes a
+    JOIN
+      routes b ON (a.company = b.company AND a.num = b.num)
+    WHERE
+      b.stop_id = 149 AND a.stop_id = 53
   SQL
 end
 
