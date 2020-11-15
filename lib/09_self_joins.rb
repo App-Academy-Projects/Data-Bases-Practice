@@ -226,5 +226,30 @@ def craiglockhart_to_sighthill
   # Sighthill. Show the bus no. and company for the first bus, the name of the
   # stop for the transfer, and the bus no. and company for the second bus.
   execute(<<-SQL)
+    SELECT DISTINCT
+      start_route.num,
+      start_route.company,
+      transfer.name,
+      finish.num,
+      finish.company
+    FROM
+      routes start_route
+    JOIN
+      routes AS to_transfer ON start_route.company = to_transfer.company
+        AND start_route.num = to_transfer.num
+    JOIN
+      stops AS transfer ON to_transfer.stop_id = transfer.id
+    JOIN
+      routes AS from_transfer ON transfer.id = from_transfer.stop_id
+    JOIN
+      routes AS finish ON from_transfer.company = finish.company
+        AND from_transfer.num = finish.num
+    JOIN
+      stops AS origin_stops ON start_route.stop_id = origin_stops.id
+    JOIN
+      stops AS dest_stops ON finish.stop_id = dest_stops.id
+    WHERE
+      origin_stops.name = 'Craiglockhart'
+        AND dest_stops.name = 'Sighthill'
   SQL
 end
