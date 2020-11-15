@@ -204,6 +204,20 @@ def start_at_craiglockhart
   # by taking one bus, including 'Craiglockhart' itself. Include the stop name,
   # as well as the company and bus no. of the relevant service.
   execute(<<-SQL)
+    SELECT DISTINCT
+      stopa.name,
+      a.company,
+      a.num
+    FROM
+      routes a
+    JOIN
+      routes b ON (a.company = b.company AND a.num = b.num)
+    JOIN
+      stops stopa ON (a.stop_id = stopa.id)
+    JOIN
+      stops stopb ON (b.stop_id = stopb.id)
+    WHERE
+      stopb.name = 'Craiglockhart'
   SQL
 end
 
