@@ -49,7 +49,7 @@ class Play
     SQL
   end
 
-  def find_by_title(title)
+  def self.find_by_title(title)
     PlayDBConnection.instance.execute(<<-SQL)
       SELECT
         *
@@ -60,7 +60,7 @@ class Play
     SQL
   end
 
-  def find_by_playwright(name)
+  def self.find_by_playwright(name)
     PlayDBConnection.instance.execute(<<-SQL)
       SELECT
         plays.*
