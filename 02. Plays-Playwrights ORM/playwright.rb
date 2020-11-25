@@ -46,4 +46,17 @@ class Playwright
             id = ?
         SQL
     end
+
+    def get_plays
+        PlayDBConnection.instance.execute(<<-SQL)
+            SELECT
+                plays.*
+            FROM
+               playwrights
+            JOIN
+                plays ON playwrights.id = playwright_id
+            WHERE
+                playwright_id = '#{self.id}'
+        SQL
+    end
 end
