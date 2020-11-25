@@ -1,5 +1,6 @@
 require 'sqlite3'
 require 'singleton'
+require_relative 'playwright.rb'
 
 class PlayDBConnection < SQLite3::Database
   include Singleton
@@ -50,26 +51,28 @@ class Play
   end
 
   def self.find_by_title(title)
-    PlayDBConnection.instance.execute(<<-SQL)
+    play = PlayDBConnection.instance.execute(<<-SQL, title)
       SELECT
         *
       FROM
         plays
       WHERE
-        title = '#{title}'
+        title = ?
     SQL
+    return nil if play.empty?
+    Play.new(play.first)
   end
 
   def self.find_by_playwright(name)
-    PlayDBConnection.instance.execute(<<-SQL)
+    playwright = Playwright.find_by_name(name)
+    plays = PlayDBConnection.instance.execute(<<-SQL, playwright.id)
       SELECT
         plays.*
       FROM
         plays
-      JOIN
-        playwrights ON playwright_id = playwrights.id
       WHERE
-        playwrights.name = '#{name}'
+        playwright_id = ?
     SQL
+    plays.map { |play| Play.new(play) }
   end
 end
