@@ -59,4 +59,17 @@ class Play
         title = '#{title}'
     SQL
   end
+
+  def find_by_playwright(name)
+    PlayDBConnection.instance.execute(<<-SQL)
+      SELECT
+        plays.*
+      FROM
+        plays
+      JOIN
+        playwrights ON playwright_id = playwrights.id
+      WHERE
+        playwrights.name = '#{name}'
+    SQL
+  end
 end
